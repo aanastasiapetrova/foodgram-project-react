@@ -1,3 +1,15 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Recipe, Tag, Ingredient
+
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'image', 'text', 'cooking_time']
+
+
+
+
+
+
+
+

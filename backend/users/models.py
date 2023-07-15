@@ -10,10 +10,10 @@ class User(AbstractUser):
     username = models.CharField(max_length=150,
                                 unique=True,
                                 db_index=True,
-                                validators=[
-                                    RegexValidator(regex=r'^[\w.@+-]+\z',
-                                                   message='Имя пользователя содержит недопустимый символ.')
-                                           ],
+                                #validators=[
+                                #    RegexValidator(regex=r'^[\w.@+-]+\z',
+                                #                   message='Имя пользователя содержит недопустимый символ.')
+                                #           ],
                                 verbose_name='Имя пользователя'
                                 )
     first_name = models.CharField(max_length=150,
