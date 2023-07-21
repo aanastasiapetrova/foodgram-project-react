@@ -79,7 +79,7 @@ class Recipe(models.Model):
         ]
     )
     image = models.ImageField(
-        upload_to='recipes/',
+        upload_to='recipes/images/',
         blank=False,
         verbose_name='Изображение'
     )
@@ -100,7 +100,7 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Ингредиенты рецепта'
     )
-    tag = models.ManyToManyField(
+    tags = models.ManyToManyField(
         Tag,
         related_name='recipes',
         verbose_name='Тэги'
@@ -114,6 +114,9 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         ordering = ['-published',]
+    
+    def __str__(self) -> str:
+        return self.name
         
     def clean(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -122,10 +125,10 @@ class Recipe(models.Model):
         img.save(self.img.path)
 
 
-class Favourite(models.Model):
+class Favorite(models.Model):
     user = models.ForeignKey(
         User,
-        related_name='favourites',
+        related_name='favorites',
         verbose_name='Пользователь',
         on_delete=models.CASCADE
     )

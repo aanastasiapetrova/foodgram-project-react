@@ -6,6 +6,10 @@ from .models import Recipe, Tag, Ingredient
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ['name', 'image', 'text', 'cooking_time']
 
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color', 'slug']
+
 
 
 
