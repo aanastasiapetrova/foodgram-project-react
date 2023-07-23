@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from .serializers import *
 from .mixins import *
@@ -24,7 +24,10 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
     
     @favorites.mapping.post
     def add_to_favorites(self, request, pk=None):
-        return Response({'status': 'favorites mapping post'})
+        recipe = get_object_or_404(Recipe, pk=pk)
+        user = User.objects.get(pk=1)
+        favorite = Favorite.objects.create(recipe=recipe, user=user)
+        return Response({'favorite': favorite})
     
     @favorites.mapping.delete
     def delete_from_favorites(self, request, pk=None):
