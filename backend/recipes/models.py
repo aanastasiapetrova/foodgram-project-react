@@ -38,8 +38,8 @@ class Tag(models.Model):
             models.UniqueConstraint(
                 fields=('name', 'slug', 'color'),
                 name='%(app_label)s_%(class)s_name_slug_color_constraint'
-                                   ),
-                       )
+            ),
+        )
 
 
 class Ingredient(models.Model):
@@ -57,7 +57,7 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['name',]
+        ordering = ['name', ]
 
 
 class Recipe(models.Model):
@@ -113,7 +113,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-published',]
+        ordering = ['-published', ]
 
     def __str__(self) -> str:
         return self.name
@@ -147,7 +147,7 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
-        ordering = ['-added',]
+        ordering = ['-added', ]
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'user'),
@@ -217,4 +217,4 @@ class Cart(models.Model):
     class Meta:
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
-        ordering = ['-added',]
+        ordering = ['-added', ]

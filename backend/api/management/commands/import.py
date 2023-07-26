@@ -20,5 +20,5 @@ class Command(BaseCommand):
             models = Ingredient(
                 name=import_name,
                 measurement_unit=import_measurement_unit
-                                )
+            )
             models.save()

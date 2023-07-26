@@ -39,22 +39,22 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
     queryset = User.objects.all()
     pagination_class = CustomPageNumberPagination
 
-    @action(detail=False, methods=['get',],
+    @action(detail=False, methods=['get', ],
             permission_classes=(IsAuthenticated,)
             )
     def subscriptions(self, request):
         user = request.user
         pages = self.paginate_queryset(
             User.objects.filter(subscribefor__user=user)
-            )
+        )
         serializer = SubscriptionSerializer(
             pages,
             many=True,
             context={'request': request}
-            )
+        )
         return self.get_paginated_response(serializer.data)
 
-    @action(detail=False, methods=['get',],
+    @action(detail=False, methods=['get', ],
             permission_classes=(IsAuthenticated,)
             )
     def me(self, request):
@@ -62,7 +62,7 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
-    @action(detail=False, methods=['get',],
+    @action(detail=False, methods=['get', ],
             permission_classes=(IsAuthenticated,)
             )
     def set_password(self, request):
@@ -71,7 +71,7 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         user.save()
         return Response(status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get'],
+    @action(detail=True, methods=['get', ],
             permission_classes=(IsAuthenticated,)
             )
     def subscribe(self, request, pk=None):
@@ -84,12 +84,12 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         subscription = Subscription.objects.filter(
             user_id=user.pk,
             author_id=int(pk)
-            )
+        )
         if author and not subscription:
             subscription = Subscription.objects.create(
                 user_id=user.pk,
                 author_id=int(pk)
-                )
+            )
             serializer = UserSerializer(author, context={'request': request})
             return Response(serializer.data)
         if author and subscription:
@@ -101,7 +101,7 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         subscription = Subscription.objects.filter(
             user_id=user.pk,
             author_id=int(pk)
-            )
+        )
         if subscription.exists():
             subscription.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -131,7 +131,7 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
             if is_favorited:
                 queryset = queryset.filter(
                     in_favorites__user=self.request.user
-                    )
+                )
 
             in_cart = self.request.query_params.get('is_in_shopping_cart')
             if in_cart:
@@ -185,7 +185,7 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['get',],
+    @action(detail=False, methods=['get', ],
             permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request):
         user = request.user
@@ -202,12 +202,12 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
             shopping_cart.insert(
                 0,
                 f'Уважаемый(-ая), {user.first_name} {user.last_name}!'
-                )
+            )
         else:
             shopping_cart.insert(
                 0,
                 f'Уважаемый(-ая), {user.username} {user.last_name}!'
-                )
+            )
 
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment; '
@@ -217,8 +217,8 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
                 'DejaVu',
                 'static/DejaVuSansCondensed.ttf',
                 'UTF-8'
-                )
             )
+        )
         page = canvas.Canvas(response)
         page.setFont('DejaVu', size=16)
         page.drawString(170, 800, shopping_cart[0])

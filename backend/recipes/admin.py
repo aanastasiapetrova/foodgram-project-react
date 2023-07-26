@@ -26,7 +26,7 @@ class UserAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
         'username'
-        ]
+    ]
 
 
 @admin.register(Subscription)
@@ -34,4 +34,4 @@ class SubscriptionAdmin(admin.ModelAdmin):
     list_display = [
         'author_id',
         'user_id'
-        ]
+    ]

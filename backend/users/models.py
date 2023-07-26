@@ -53,5 +53,5 @@ class Subscription(models.Model):
             models.UniqueConstraint(
                 fields=('author', 'user'),
                 name='%(app_label)s_%(class)s_author_user_constraint'
-                ),
+            ),
         )
