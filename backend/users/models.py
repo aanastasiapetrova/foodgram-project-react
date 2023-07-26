@@ -1,6 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.db import models
+
 
 class User(AbstractUser):
     email = models.EmailField(max_length=254,
@@ -10,33 +10,29 @@ class User(AbstractUser):
     username = models.CharField(max_length=150,
                                 unique=True,
                                 db_index=True,
-                                #validators=[
-                                #    RegexValidator(regex=r'^[\w.@+-]+\z',
-                                #                   message='Имя пользователя содержит недопустимый символ.')
-                                #           ],
                                 verbose_name='Имя пользователя'
                                 )
     first_name = models.CharField(max_length=150,
                                   verbose_name="Имя"
-                                 )
+                                  )
     last_name = models.CharField(max_length=150,
                                  verbose_name='Фамилия'
-                                )
+                                 )
     password = models.CharField(max_length=150,
-                                 verbose_name='Пароль'
+                                verbose_name='Пароль'
                                 )
     is_active = models.BooleanField(
         default=True,
         verbose_name="Активен"
     )
-    
+
     class Meta:
         verbose_name = ("Пользователь")
         verbose_name_plural = ("Пользователи")
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
-    
+
 
 class Subscription(models.Model):
     user = models.ForeignKey(
@@ -59,7 +55,3 @@ class Subscription(models.Model):
                 name='%(app_label)s_%(class)s_author_user_constraint'
                 ),
         )
-
-    
-
-    

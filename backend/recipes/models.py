@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator, RegexValidator, MaxValueValidator, MinLengthValidator
+from django.core.validators import (MaxValueValidator, MinLengthValidator,
+                                    MinValueValidator, RegexValidator)
+from django.db import models
 from PIL import Image
 
 User = get_user_model()
@@ -28,8 +29,7 @@ class Tag(models.Model):
         verbose_name='Уникальный слаг',
         unique=True
     )
-    
-    
+
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
@@ -40,7 +40,7 @@ class Tag(models.Model):
                 name='%(app_label)s_%(class)s_name_slug_color_constraint'
                                    ),
                        )
-        
+
 
 class Ingredient(models.Model):
     name = models.CharField(
@@ -53,13 +53,13 @@ class Ingredient(models.Model):
         blank=False,
         verbose_name='Единица измерения'
     )
-    
+
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         ordering = ['name',]
 
-    
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -109,15 +109,15 @@ class Recipe(models.Model):
         auto_now_add=True,
         editable=False,
         verbose_name='Дата публикации рецепта')
-    
+
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         ordering = ['-published',]
-    
+
     def __str__(self) -> str:
         return self.name
-        
+
     def clean(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.img.path)
@@ -143,7 +143,7 @@ class Favorite(models.Model):
         editable=False,
         verbose_name='Дата добавления рецепта'
     )
-    
+
     class Meta:
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
@@ -154,9 +154,8 @@ class Favorite(models.Model):
                 name='%(app_label)s_%(class)s_recipe_user_constraint'
             ),
         )
-        
 
-    
+
 class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
@@ -183,8 +182,7 @@ class IngredientAmount(models.Model):
             )
         )
     )
-    
-    
+
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
@@ -195,8 +193,8 @@ class IngredientAmount(models.Model):
                 name='%(app_label)s_%(class)s_recipe_ingr_constraint'
             ),
         )
-        
-    
+
+
 class Cart(models.Model):
     recipe = models.ForeignKey(
         Recipe,
@@ -215,8 +213,7 @@ class Cart(models.Model):
         editable=False,
         verbose_name='Дата добавления списка'
     )
-    
-    
+
     class Meta:
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
