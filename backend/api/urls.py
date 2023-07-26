@@ -6,7 +6,7 @@ from .views import (
     RecipeViewSet,
     TagViewSet,
     IngredientViewSet
-    )
+)
 
 router = DefaultRouter()
 
