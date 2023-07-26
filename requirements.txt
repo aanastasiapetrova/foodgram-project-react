@@ -1,0 +1,5 @@
+django==4.0
+djangorestframework
+Pillow
+django-extra-fields
+psycopg2
