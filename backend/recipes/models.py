@@ -62,6 +62,7 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     MAX_SIZE = (100, 100)
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -122,7 +123,7 @@ class Recipe(models.Model):
     def clean(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.img.path)
-        img.thumbnail(MAX_SIZE)
+        img.thumbnail(Recipe.MAX_SIZE)
         img.save(self.img.path)
 
 
@@ -187,7 +188,7 @@ class IngredientAmount(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ('recipe')
+        ordering = ('recipe',)
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'ingredient'),

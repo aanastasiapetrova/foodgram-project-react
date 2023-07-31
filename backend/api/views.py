@@ -9,28 +9,17 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from recipes.models import (
-    Tag,
-    Recipe,
-    Ingredient,
-    IngredientAmount,
-    Favorite,
-    Cart
-)
-from users.models import User, Subscription
+from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
+                            Recipe, Tag)
+from users.models import Subscription, User
 
 from .filters import IngredientFilter, TagFilter
 from .mixins import CreateRetrieveViewSet, UpdateDeleteViewSet
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from .serializers import (
-    UserSerializer,
-    SubscriptionSerializer,
-    RecipeSerializer,
-    PreviewRecipeSerializer,
-    TagSerializer,
-    IngredientSerializer
-)
+from .serializers import (IngredientSerializer, PreviewRecipeSerializer,
+                          RecipeSerializer, SubscriptionSerializer,
+                          TagSerializer, UserSerializer)
 
 
 class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
