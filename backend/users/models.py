@@ -18,9 +18,6 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150,
                                  verbose_name='Фамилия'
                                  )
-    password = models.CharField(max_length=150,
-                                verbose_name='Пароль'
-                                )
     is_active = models.BooleanField(
         default=True,
         verbose_name="Активен"

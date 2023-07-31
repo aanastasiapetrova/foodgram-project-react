@@ -33,7 +33,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
-        ordering = ['name', ]
+        ordering = ('name', )
         constraints = (
             models.UniqueConstraint(
                 fields=('name', 'slug', 'color'),
@@ -57,10 +57,11 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['name', ]
+        ordering = ('name', )
 
 
 class Recipe(models.Model):
+    MAX_SIZE = (100, 100)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -113,7 +114,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-published', ]
+        ordering = ('-published', )
 
     def __str__(self) -> str:
         return self.name
@@ -121,7 +122,7 @@ class Recipe(models.Model):
     def clean(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.img.path)
-        img.thumbnail([100, 100])
+        img.thumbnail(MAX_SIZE)
         img.save(self.img.path)
 
 
@@ -147,7 +148,7 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
-        ordering = ['-added', ]
+        ordering = ('-added', )
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'user'),
@@ -186,7 +187,7 @@ class IngredientAmount(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['recipe']
+        ordering = ('recipe')
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'ingredient'),
@@ -217,4 +218,4 @@ class Cart(models.Model):
     class Meta:
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
-        ordering = ['-added', ]
+        ordering = ('-added', )

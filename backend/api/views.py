@@ -79,27 +79,21 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
 
     @subscribe.mapping.post
     def subscribe_for(self, request, pk=None):
-        user = get_object_or_404(User, pk=request.user.id)
         author = get_object_or_404(User, pk=pk)
-        subscription = Subscription.objects.filter(
-            user_id=user.pk,
+        subscription, created = Subscription.objects.get_or_create(
+            user_id=request.user.id,
             author_id=int(pk)
         )
-        if author and not subscription:
-            subscription = Subscription.objects.create(
-                user_id=user.pk,
-                author_id=int(pk)
-            )
+        if author and created:
             serializer = UserSerializer(author, context={'request': request})
             return Response(serializer.data)
-        if author and subscription:
+        if author and not created:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @subscribe.mapping.delete
     def unsubscribe(self, request, pk=None):
-        user = get_object_or_404(User, pk=request.user.id)
         subscription = Subscription.objects.filter(
-            user_id=user.pk,
+            user_id=request.user.id,
             author_id=int(pk)
         )
         if subscription.exists():
@@ -126,7 +120,7 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         if author:
             queryset = queryset.filter(author=author)
 
-        if not self.request.user.is_anonymous:
+        if self.request.user.is_authenticated:
             is_favorited = self.request.query_params.get('is_favorited')
             if is_favorited:
                 queryset = queryset.filter(
@@ -143,7 +137,7 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
 
     @action(detail=True, permission_classes=(IsAuthenticated,))
     def favorite(self, request, pk=None):
-        pass
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @favorite.mapping.post
     def add_to_favorites(self, request, pk=None):
@@ -165,7 +159,7 @@ class RecipeViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
 
     @action(detail=True, permission_classes=(IsAuthenticated,))
     def shopping_cart(self, request, pk=None):
-        pass
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @shopping_cart.mapping.post
     def add_to_shopping_cart(self, request, pk=None):
