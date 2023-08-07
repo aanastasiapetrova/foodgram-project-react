@@ -18,9 +18,7 @@ services:
       - pg_data:/var/lib/postgresql/data/
 
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: anastasiapetrova/foodgram_backend
     volumes:
       - static:/backend_static/
       - media:/app/media/
@@ -30,9 +28,7 @@ services:
       - db
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: anastasiapetrova/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
 
