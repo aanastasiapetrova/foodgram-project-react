@@ -6,7 +6,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
@@ -27,11 +27,13 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
     add_serializer = SubscriptionSerializer
     queryset = User.objects.all()
     pagination_class = CustomPageNumberPagination
+    permission_classes = (AllowAny,)
 
     @action(detail=False, methods=['get', ],
             permission_classes=(IsAuthenticated,)
             )
     def subscriptions(self, request):
+        print(request.data)
         user = request.user
         pages = self.paginate_queryset(
             User.objects.filter(subscribefor__user=user)
