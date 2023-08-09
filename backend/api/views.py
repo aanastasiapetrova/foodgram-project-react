@@ -77,7 +77,7 @@ class UserViewSet(CreateRetrieveViewSet, UpdateDeleteViewSet):
         if author and created:
             serializer = UserSerializer(author, context={'request': request})
             return Response(serializer.data)
-        if author and not created:
+        elif author and not created:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @subscribe.mapping.delete
