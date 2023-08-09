@@ -43,7 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
             user.is_authenticated
             and user != author
             and user.subscriber.filter(author=author).exists()
-            )
+        )
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -168,7 +168,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return (
             user.is_authenticated
             and user.favorites.filter(recipe=recipe).exists()
-            )
+        )
 
     def get_is_in_shopping_cart(self, recipe):
         user = self.context.get('view').request.user
@@ -176,7 +176,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return (
             user.is_authenticated
             and user.cart_owner.filter(recipe=recipe).exists()
-            )
+        )
 
 
 class PreviewRecipeSerializer(serializers.ModelSerializer):

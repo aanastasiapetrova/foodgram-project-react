@@ -10,7 +10,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'image',
         'text',
         'cooking_time'
-        )
+    )
 
 
 @admin.register(Tag)
@@ -19,7 +19,7 @@ class TagAdmin(admin.ModelAdmin):
         'name',
         'color',
         'slug'
-        )
+    )
 
 
 @admin.register(Ingredient)
@@ -27,4 +27,4 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'measurement_unit'
-        )
+    )
