@@ -70,6 +70,8 @@ jobs:
             echo DB_PORT = = ${{ secrets.DB_PORT }} >> .env
 
             sudo docker compose stop
-            sudo docker compose rm backend
+            sudo docker compose rm backend nginx
             sudo docker compose -f docker-compose.production.yml up -d
+            sudo docker image prune -a
+
           
