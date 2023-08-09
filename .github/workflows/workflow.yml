@@ -45,29 +45,29 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_LOGIN }}/foodgram_backend:latest
 
-  #deploy:
-  #  runs-on: ubuntu-latest
-  #  needs: build_and_push_to_docker_hub
-  #  steps:
-  #    - name: executing remote ssh commands to deploy
-  #      uses: appleboy/ssh-action@master
-  #      with:
-  #        host: ${{ secrets.HOST }}
-  #        username: ${{ secrets.USER }}
-  #        key: ${{ secrets.SSH_KEY }}
-  #        passphrase: ${{ secrets.PASSPHRASE }}
-  #        script: |
-  #          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
-  #          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
-  #          sudo docker compose stop
-  #          sudo docker compose rm backend
-  #          rm .env
-  #          touch .env
-  #          echo SECRET_KEY
-  #          echo DB_NAME
-  #          echo DB_USER
-  #          echo DB_PASSWORD
-  #          echo DB_HOST
-  #          echo DB_PORT
-  #          sudo docker compose -f docker-compose.production.yml up -d
-  #        
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push_to_docker_hub
+    steps:
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
+            sudo docker compose stop
+            sudo docker compose rm backend
+            rm .env
+            touch .env
+            echo SECRET_KEY = ${{ secrets.SECRET_KEY }}
+            echo DB_NAME = ${{ secrets.DB_NAME }}
+            echo DB_USER = ${{ secrets.DB_USER }}
+            echo DB_PASSWORD = ${{ secrets.DB_PASSWORD }}
+            echo DB_HOST = ${{ secrets.DB_HOST }}
+            echo DB_PORT = = ${{ secrets.DB_PORT }}
+            sudo docker compose -f docker-compose.production.yml up -d
+          
