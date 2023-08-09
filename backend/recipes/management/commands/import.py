@@ -2,7 +2,6 @@ from typing import Any
 
 import pandas as pd
 from django.core.management.base import BaseCommand, CommandParser
-
 from recipes.models import Ingredient
 
 
