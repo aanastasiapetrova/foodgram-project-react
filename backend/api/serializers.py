@@ -1,14 +1,10 @@
-from recipes.models import (
-    Tag,
-    Ingredient,
-    IngredientAmount,
-    Recipe
-)
-from users.models import User
-from rest_framework import serializers
-from drf_extra_fields.fields import Base64ImageField
 from django.db.models import F
 from django.db.transaction import atomic
+from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
+from recipes.models import Ingredient, IngredientAmount, Recipe, Tag
+from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -138,7 +134,6 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     @atomic
     def update(self, instance, validated_data):
-        ingredient_amount = []
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
 
@@ -150,7 +145,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.ingredients.clear()
 
         for ingredient_info in ingredients:
-            ingredient_amount = IngredientAmount.objects.create(
+            IngredientAmount.objects.create(
                 recipe_id=instance.id,
                 ingredient_id=ingredient_info['id'],
                 amount=ingredient_info['amount']
